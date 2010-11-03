@@ -8,7 +8,6 @@ import StringIO
 import code
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
-from timeout import timeout, TimeoutException
 
 from daemon import Daemon
 
@@ -26,79 +25,69 @@ class MyDaemon(Daemon):
         server.register_introspection_functions()
 
         # Register a function under a different name
-        self.localVariables={}
-        self.lastOuput = 0
-        ic = code.InteractiveConsole(self.localVariables)
-        ic.push('from sympy import *')
-        ic.push('from numpy import *')
-        ic.push('from imgPlot import *')
-        ic.push('import sympy')
-        ic.push('import numpy')
-        ic.push('import imgPlot')
-        ic.push('from imgPlot import *')
-        ic.push('def pretty(expr): return \'$\'+latex(expr)+\'$\'\n')
 
-        initial_vars = set(self.localVariables)
+        def reset_state():
+            self.localVariables={}
+            self.lastOuput = 0
+            self.ic = code.InteractiveConsole(self.localVariables)
+            self.ic.push('from sympy import *')
+            self.ic.push('from numpy import *')
+            self.ic.push('from imgPlot import *')
+            self.ic.push('def pretty(expr): return \'$\'+latex(expr)+\'$\'\n')
 
+            self.initial_vars = set(self.localVariables)
+        
+        reset_state()
+        server.register_function(reset_state, 'resetState')
         def get_local_vars():
-            new_vars = set(self.localVariables)
-            variables = new_vars.difference(initial_vars)
-
-            res = {}
-
-            for var in variables:
-                v = self.localVariables[var]
-                res[var] = [repr(v), type(v).__name__]
-
-            return res
+            return map(lambda x: [x,self.localVariables[x]],set(self.localVariables)-set(self.initial_vars))
 
         server.register_function(get_local_vars, 'get_local_vars')
         self.prevExpr=''
         def eval_expr(exprStr):
-            @timeout(timeout=3)
-            def inner():
-                tmp1 = sys.stdout
-                tmp2 = sys.stdout
-                output = StringIO.StringIO()
-                erroutput = StringIO.StringIO()
-                sys.stdout = output
-                sys.stderr = output
-                try:
-                    safe_eval(self.prevExpr+exprStr)
-                except SafeEvalContextException as e:
+            if len(exprStr) == 0:
+                self.ic.push(exprStr)
+            tmp1 = sys.stdout
+            tmp2 = sys.stdout
+            output = StringIO.StringIO()
+            erroutput = StringIO.StringIO()
+            sys.stdout = output
+            sys.stderr = output
+            try:
+                safe_eval(self.prevExpr+exprStr)
+            except SafeEvalContextException as e:
                     self.prevExpr = ''
                     sys.stderr.write(e.__str__())
-                    ic.resetbuffer()
+                    self.ic.resetbuffer()
                     
-                except SafeEvalCodeException as e:
+            except SafeEvalCodeException as e:
                     self.prevExpr = ''
                     sys.stderr.write(e.__str__())
-                    ic.resetbuffer()
-                except SyntaxError:
-                    self.lastOutput= ic.push(exprStr)
+                    self.ic.resetbuffer()
+            except SyntaxError:
+                    self.lastOutput= self.ic.push(exprStr)
                     if self.lastOutput:
                         self.prevExpr += exprStr
                     else:
                         self.prevExpr=''
+            else:
+                self.lastOutput= self.ic.push(exprStr)
+                if self.lastOutput:
+                    self.prevExpr += exprStr
                 else:
-                    self.lastOutput= ic.push(exprStr)
-                    if self.lastOutput:
-                        self.prevExpr += exprStr
-                    else:
-                        self.prevExpr=''
+                    self.prevExpr=''
             
-                sys.stdout.flush()
-                sys.stderr.flush()
-                self.localVariables["ans"] = output.getvalue()
-                sys.stdout = tmp1
-                sys.stderr = tmp2
-                return str(output.getvalue()+erroutput.getvalue())
-            return inner()
+            sys.stdout.flush()
+            sys.stderr.flush()
+            self.localVariables["ans"] = output.getvalue()
+            sys.stdout = tmp1
+            sys.stderr = tmp2
+            return str(output.getvalue()+erroutput.getvalue())
 
         server.register_function(eval_expr, 'eval')
 
         def expectingMoreInput():
-            return self.lastOutput
+            return repr(self.lastOutput)
 
         server.register_function(expectingMoreInput, 'expectingMoreInput')
 
@@ -114,8 +103,8 @@ class MyDaemon(Daemon):
         # Run the server's main loop
         server.serve_forever()
 
-import inspect, compiler.ast
-import thread, time
+import compiler.ast
+import thread
 
 #----------------------------------------------------------------------
 # Module globals.
@@ -198,9 +187,9 @@ unallowed_builtins = [
 #   'dict',
     'dir',
 #   'divmod', 'enumerate',
-    'eval', 'execfile', 'file',
+    'eval', 'execfile', 'exit','file',
 #   'filter', 'float', 'frozenset',
-    'getattr', 'globals', 'hasattr',
+    'getattr', 'globals', 'hasattr','help',
 #    'hash', 'hex', 'id',
     'input',
 #   'int', 'intern', 'isinstance', 'issubclass', 'iter',
