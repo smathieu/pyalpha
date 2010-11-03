@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PyAlpha</title>
+    <link type="text/css" rel="stylesheet" href="css/smoothness/jquery-ui-1.8.5.custom.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.console.js"></script>
+    <script type="text/javascript" src="js/MathJax/MathJax.js">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+      jax: ["input/TeX","output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [['$','$'],["\\(","\\)"]],
+        processEscapes: true,
+        ignoreClass: 'variable-list' // The variable list should stay strings
+      },
+    });
+
+    </script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-19293182-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+  <body>
+    <div id="header">
+      <img src="images/logo.png" />
+    </div>
+    <div name="console" id="console" class="jqconsole"></div>
+    <div class="variable-list"></div>
+    <div id='help'>
+      <button>Help</button>
+      <div id='help-info'>
+        <h4>Graphing</h4>
+        <p>Plotting is handled using standard numpy functionality, except for the final display function. Once the plot has been fully run, you must call .getPlot on the imgPlot variable.</p>
+
+        e.g. Ploting a basic sine wave
+        <ul>
+        <li>x = linspace(0, 6*pi, 100)</li>
+        <li>p = imgPlot()</li>
+        <li>plt.plot(x, sin(x))</li>
+        <li>p.getPlot();</li>
+        </ul>
+
+        <h4>Printing Equations</h4>
+        <p>
+        The 'pretty' function should be used to output prettified math formulas. First variables must be defined using the Symbol objects, then you pass the equation to the pretty function.<br />
+        If you already have LaTeX style formula, you can run "print '\$\$\\frac{x}{3}\$\$'". Be sure to double-escape the backslashes(\)
+        </p>
+
+        e.g. Output pretty equation
+        <ul>
+          <li>x = Symbol('x')</li>
+          <li>y = Symbol('y')</li>
+          <li>z = Symbol('z')</li>
+          <li>pretty(x**2 + y**2 + z**2)</li>
+        </ul>
+
+        e.g. Fancy math
+        <ul>
+          <li>f = sympy.sin(2*x*y)</li>
+          <li>d = sympy.diff(f, x)</li>
+          <li>pretty(f)</li>
+          <li>pretty(d)</li>
+        </ul>
+      </div>
+    </div>
+    <div id="samples">
+      <button>Samples</button>
+      <div id="sample-scripts">
+      </div>
+    </div>
+  </body>
+</html>
