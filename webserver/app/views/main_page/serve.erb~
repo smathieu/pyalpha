@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Team Alpha</title>
+    <link type="text/css" rel="stylesheet" href="css/smoothness/jquery-ui-1.8.5.custom.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.console.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="MathJax/MathJax.js"></script>
+  </head>
+  <body>
+
+  </body>
+</html>

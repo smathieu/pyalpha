@@ -1,0 +1,207 @@
+
+/* Clearfix from http://www.webtoolkit.info/css-clearfix.html */
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+.clearfix {
+  display: inline-block;
+}
+html[xmlns] .clearfix {
+  display: block;
+}
+* html .clearfix {
+  height: 1%;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.img-plot {
+  display:block;
+}
+#console .img-plot {
+  height: 500px;
+}
+
+#header img {
+  position: absolute;
+}
+
+#help {
+  position: absolute;
+  right: 40px;
+  bottom: 20px;
+}
+#help-info {
+  display:none;
+  font-size: 14px;
+}
+
+#samples {
+  position: absolute;
+  right: 150px;
+  bottom: 20px;
+}
+#sample-scripts {
+  display: none;
+  font-size: 14px;
+}
+
+
+
+.jqconsole {
+  margin-right: 300px;
+  height:100%;
+  position:relative;
+}
+
+.variable-list {
+  width: 295px;
+  position: absolute;
+  right: 0px;
+  top: 60px;
+  bottom: 80px;
+  margin-right: 5px;
+  overflow: auto;
+}
+.jquery-console-inner {
+  overflow: auto;
+  padding-left: 10px;
+  padding-top: 0px;
+  padding-bottom: 20px;
+  position: absolute;
+  top: 60px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+}
+
+
+.jquery-console-cursor {
+  background-color: gray;
+}
+
+.variable-list table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.variable-list th {
+  background-color: #00D651;
+  border: 1px solid #00471B;
+}
+.variable-list td {
+  border: 1px solid #00471B;
+  overflow: hidden;
+}
+
+tr.even {
+  background-color: #EAF2D3;
+}
+tr.odd {
+/*  background-color: #*/
+}
+/*
+Tema: Soft Table - A Simple table style with the use of the soft brown color
+Author: Newton de Góes Horta
+Site: --
+Country Origin: Brazil
+*/
+
+table {
+ font-size:0.9em;
+ font-family: Arial, Helvetica, verdana sans-serif;
+ background-color:#fff;
+ border-collapse: collapse;
+ width: 100%;
+}
+caption {
+ font-size: 25px;
+ color: #1ba6b2;
+ font-weight: bold;
+ text-align: left;
+ background: url(header_bg.jpg) no-repeat top left;
+ padding: 10px;
+ margin-bottom: 2px;
+}
+thead th {
+ border-right: 1px solid #fff;
+ color:#fff;
+ text-align:center;
+ padding:2px;
+ text-transform:uppercase;
+ height:25px;
+ background-color: #a3c159;
+ font-weight: normal;
+}
+tfoot {
+ color:#1ba6b2;
+ padding:2px;
+ text-transform:uppercase;
+ font-size:1.2em; 
+ font-weigth: bold;
+ margin-top:6px;
+ border-top: 6px solid #e9f7f6;
+}
+tbody tr {
+ background-color:#fff;
+ border-bottom: 1px solid #f0f0f0;
+}
+tbody td {
+ color:#414141;
+ padding:5px;
+ text-align:left;
+}
+tbody th {
+ text-align:left;
+ padding:2px;
+}
+tbody td a, tbody th a {
+ color:#6C8C37;
+ text-decoration:none;
+ font-weight:normal; 
+ display:block;
+ background: transparent url(links_yellow.gif) no-repeat 0% 50%;
+ padding-left:15px;
+}
+tbody td a:hover, tbody th a:hover {
+ color:#009193;
+ text-decoration:none;
+}
+
+
+textarea {
+  resize: none;
+}
+div.grippie {
+  background:#EEEEEE url(img/grippie.png) no-repeat scroll center 2px;
+  border-color:#DDDDDD;
+  border-style:solid;
+  border-width:0pt 1px 1px;
+  cursor:s-resize;
+  height:9px;
+  overflow:hidden;
+}
+.resizable-textarea textarea {
+  display:block;
+  margin-bottom:0pt;
+  width:95%;
+  height: 20%;
+}
+
+.error-msg {
+  color: red;
+}
+
