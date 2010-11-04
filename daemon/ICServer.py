@@ -40,8 +40,15 @@ class MyDaemon(Daemon):
         reset_state()
         server.register_function(reset_state, 'resetState')
         def get_local_vars():
-#            return "test"
-            return map(lambda x: {x:[repr(self.localVariables[x]),type(self.localVariables[x]).__name__]},set(self.localVariables)-set(self.initial_vars))
+            variables = set(self.localVariables).difference(self.initial_vars)
+
+            res = {}
+
+            for var in variables:
+                v = self.localVariables[var]
+                res[var] = [repr(v), type(v).__name__]
+
+            return res
 
         server.register_function(get_local_vars, 'get_local_vars')
         self.prevExpr=''
