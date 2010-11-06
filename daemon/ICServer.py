@@ -39,17 +39,13 @@ class MyDaemon(Daemon):
         
         reset_state()
         server.register_function(reset_state, 'resetState')
-        def get_local_vars():
-            variables = set(self.localVariables).difference(self.initial_vars)
-            res = {}
+        
+        def get_local_vars(max_length):
+            limit_length = (lambda z:z[0:max_length-3]+('...'*(len(z)>max_length))+(z[max_length-3:max_length]*(len(z)<=max_length)))
+            return_variables_type = lambda y:[limit_length(repr(y)),type(y).__name__]
+            return lambda: dict(map(lambda x:[x,return_variables_type(self.localVariables[x])],set(self.localVariables)-set(self.initial_vars)))
 
-            for var in variables:
-                v = self.localVariables[var]
-                res[var] = [repr(v), type(v).__name__]
-
-            return res
-
-        server.register_function(get_local_vars, 'get_local_vars')
+        server.register_function(get_local_vars(13), 'get_local_vars')
         self.prevExpr=''
         def eval_expr(exprStr):
             if len(exprStr) == 0:
@@ -93,7 +89,7 @@ class MyDaemon(Daemon):
         server.register_function(eval_expr, 'eval')
 
         def expectingMoreInput():
-            return repr(self.lastOutput)
+            return self.lastOutput
 
         server.register_function(expectingMoreInput, 'expectingMoreInput')
 
